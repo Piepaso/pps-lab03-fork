@@ -1,5 +1,7 @@
 package u03
 
+import scala.annotation.tailrec
+
 object Streams extends App :
 
   import Sequences.*
@@ -43,8 +45,13 @@ object Streams extends App :
       case _ => Empty()
 
     //Es 7
-    //def fill[A](n: Int)(k: A): Stream[A] =
+    def fill[A](n: Int)(k: A): Stream[A] = n match
+      case n if n > 0 => cons(k, fill(n-1)(k))
+      case _ => empty()
 
+    //Es 8
+    def fibonacci(first: => Int, second: => Int) : Stream[Int] =
+      cons(first, fibonacci(second, first + second))
 
   end Stream
 
