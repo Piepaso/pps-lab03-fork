@@ -55,7 +55,10 @@ class SequenceTest:
   @Test def testReverse() = reverseTester(reverse)
 
   @Test def testFlatMap() =
-    assertEquals(Cons(10,Cons(11, Cons(20,Cons(21,Cons(30, Cons(31, Nil())))))), flatMap(sequence)(v => Cons(v, Cons(v+1, Nil()))))
+    assertEquals(
+      Cons(10,Cons(11, Cons(20,Cons(21,Cons(30, Cons(31, Nil())))))),
+      flatMap(sequence)(v => Cons(v, Cons(v+1, Nil())))
+    )
     assertEquals(Nil(), flatMap(Nil())(v => Cons(v, Nil())))
 
   @Test def testMin() =
@@ -63,9 +66,13 @@ class SequenceTest:
     assertEquals(Just(1), min(Cons(1, Nil())))
     assertEquals(Empty(), min(Nil()))
 
-  @Test def testEvenIndices() =
-    assertEquals(Cons(10, Cons(30, Nil())), evenIndices(sequence))
-    assertEquals(Nil(), evenIndices(Nil()))
+  def evenIndicesTester(evenIndicesFun: Sequence[Int] => Sequence[Int]) =
+    assertEquals(Cons(10, Cons(30, Nil())), evenIndicesFun(sequence))
+    assertEquals(Nil(), evenIndicesFun(Nil()))
+
+  @Test def testEvenIndices() = evenIndicesTester(evenIndices)
+
+  @Test def testTailRecEvenIndices() = evenIndicesTester(tailRecEvenIndices)
 
   @Test def testContains() =
     assertEquals(true, contains(sequence)(10))
