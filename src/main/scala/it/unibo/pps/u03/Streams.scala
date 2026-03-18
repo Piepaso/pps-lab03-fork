@@ -53,6 +53,18 @@ object Streams extends App :
     def fibonacci(first: => Int, second: => Int) : Stream[Int] =
       cons(first, fibonacci(second, first + second))
 
+    //Es 9
+    def interleave[A](s1: Stream[A], s2: Stream[A]): Stream[A] = (s1, s2) match
+      case (Cons(h1, t1), Cons(h2, t2)) => cons(h1(), cons(h2(), interleave(t1(), t2())))
+      case (Cons(h1, t1), Empty()) => s1
+      case (Empty(), Cons(h2, t2)) => s2
+      case (_, _) => empty()
+
+    //Es 10
+    def cycle[A](l: Sequence[A]): Stream[A] = l match
+      case Sequence.Cons(h, t) => cons(h, cycle(Sequence.concat(t, Sequence.Cons(h, Sequence.Nil()))))
+      case _ => Empty()
+
   end Stream
 
 @main def tryStreams =
